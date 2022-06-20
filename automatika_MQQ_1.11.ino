@@ -69,9 +69,9 @@ int LDR_Value;
 
 
 const char *mqtt_broker = "broker.hivemq.com";
-const char *topic = "pastrevys/namai";
-const char *mqtt_username = "karolis";
-const char *mqtt_password = "223";
+const char *topic = "TOPIC";
+const char *mqtt_username = "USERNAME";
+const char *mqtt_password = "PASSWORD";
 const int   mqtt_port = 1883;
 
 OneWire oneWire(ONE_WIRE_BUS);
