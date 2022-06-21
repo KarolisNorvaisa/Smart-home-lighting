@@ -66,8 +66,6 @@ int datat = 0;
 long LDR_time , Dimmer1_on_time, Timer2;
 int LDR_Value;
 
-
-
 const char *mqtt_broker = "broker.hivemq.com";
 const char *topic = "TOPIC";
 const char *mqtt_username = "USERNAME";
@@ -105,10 +103,8 @@ void setup() {
   pinMode(PIRpin, INPUT_PULLDOWN);
 
   attachInterrupt(digitalPinToInterrupt(PIRpin), PIR_ACTIVADED, RISING);
-
   
   ticker.attach(0.6, tick);
-  // wm.resetSettings();
   wm.setConfigPortalTimeout(60); 
   wm.setAPCallback(configModeCallback);
   if (!wm.autoConnect()) {
@@ -116,8 +112,6 @@ void setup() {
     ESP.restart();
     delay(1000);
   }
-
-  Serial.println("connected...yeey :)");
   ticker.detach();
  
   Serial.println("Connected to the WiFi network");
@@ -172,7 +166,6 @@ void callback(char *topic, byte *payload, unsigned int length) {
   proc (datat);
   datat = 0;
 tick();
-
 }
 
 void tick() {
@@ -323,25 +316,26 @@ void RFdecode(int Data){
     long now = millis();
     Serial.println("Lost WIFI");
     if (now-lastReconnectAttempt_WIFI>50000){
-       Serial.println("Trying to reconnect");
+      Serial.println("Trying to reconnect");
       lastReconnectAttempt_MQTT = now;
       Reconnect_MQTT_Attempts++;
       Serial.println("Reconnect attempts");
       Serial.println(Reconnect_MQTT_Attempts);  
-       WiFi.persistent (false);
-       Serial.println("Disconnect wifi");
-       delay(1000);
-       wm.autoConnect("Virtuves_Valdiklis");
-       Serial.println("Autoconnect");
-       delay(1000);   
+      WiFi.persistent (false);
+      Serial.println("Disconnect wifi");
+      delay(1000);
+      wm.autoConnect("Virtuves_Valdiklis");
+      Serial.println("Autoconnect");
+      delay(1000);   
     if (WiFi.status() == WL_CONNECTED){lastReconnectAttempt_WIFI=0;
-     lastReconnectAttempt_WIFI = 0;
-     Reconnect_WIFI_Attempts=0;
-     reconnect();
-     Serial.println("WIFI reconnect success");
+      lastReconnectAttempt_WIFI = 0;
+      Reconnect_WIFI_Attempts=0;
+      reconnect();
+      Serial.println("WIFI reconnect success");
 
-    }}
-   if (Reconnect_WIFI_Attempts>3){
+    } 
+  }
+  if (Reconnect_WIFI_Attempts>3){
     Serial.println("Reconnect unsuccessful, restarting ESP");
     ESP.restart();
           
@@ -441,7 +435,6 @@ void loop() {
     STATELED();
     published=false; // atstatomas publishinimo 1 karta flagas
     }
-    //Serial.println (LDR_Value);
   if (millis() - Timer2 >= 30000){
     Serial.println (TempDS18B20());
     pub (TempDS18B20(),"pastrevys/namai/koridorius/temp");
